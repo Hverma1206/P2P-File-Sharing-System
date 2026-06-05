@@ -1,0 +1,20 @@
+# Compiled binaries
+server
+client
+
+# Object files
+*.o
+*.a
+*.so
+
+# macOS
+.DS_Store
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Core dumps
+core
