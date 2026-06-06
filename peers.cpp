@@ -3,6 +3,7 @@
 
 std::mutex mtx;
 struct sockaddr_in server_address;
+uint16_t g_peer_port = PORT;
 
 int client::calculate_chunk_number(uint32_t file_length){
     int chunk_number = file_length / CHUNK_SIZE;
@@ -29,7 +30,7 @@ int client::register_request(uint16_t number_of_file, std::vector<file_info> fil
     uint32_t file_length = 0;
     std::string file_name;
     const uint32_t request_type = 0;
-    uint16_t port = PORT;
+    uint16_t port = g_peer_port;
     std::string response_message;
 
     //create socket
@@ -366,7 +367,7 @@ int client::register_chunk(std::string file_name, int index){
 
     //send request to the server
     uint32_t request_type = 3;
-    uint16_t port = PORT;
+    uint16_t port = g_peer_port;
     send(peer_fd, &request_type, sizeof(request_type), 0);
     send(peer_fd, &file, sizeof(file), 0);
     send(peer_fd, &chunk_index, sizeof(chunk_index), 0);
@@ -506,7 +507,7 @@ int client::execute(void){
     bzero(&peer_address, sizeof(peer_address));
     peer_address.sin_family = PF_INET; 
     peer_address.sin_addr.s_addr = INADDR_ANY; 
-    peer_address.sin_port = htons(PORT); 
+    peer_address.sin_port = htons(g_peer_port);
 
     //bind socket
     if(bind(server_fd, (struct sockaddr*) &peer_address, sizeof(peer_address)) < 0){

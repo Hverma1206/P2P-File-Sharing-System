@@ -238,6 +238,10 @@ int server::execute(void)
         exit(0);
     }
 
+    // allow port reuse so restarts don't fail with "address already in use"
+    int opt = 1;
+    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+
     // initailize address structure
     bzero(&server_address, sizeof(server_address));
     server_address.sin_family = PF_INET;
@@ -257,6 +261,8 @@ int server::execute(void)
         perror("Failed to listen");
         exit(0);
     }
+
+    std::cout << "Server started on port " << SERVER_PORT << std::endl;
 
     while (1)
     {
